@@ -37,17 +37,18 @@ import {
           };
       }
 
-    @Post('/disease')
+    @Post('/disease/add')
     async addArticle(
       @BodyParam('disease_code') disease_code:string,
+      @BodyParam('disease_name') disease_name:string,
       @BodyParam('disease_ref_department') disease_ref_department:string,
       @BodyParam('disease_description') disease_description?:string,
     ){
-      const result = await this.diseaseService.addArticle({disease_code,disease_ref_department,disease_description})
+      const result = await this.diseaseService.addArticle({ disease_code, disease_name, disease_ref_department, disease_description })
       return result;
     }
 
-    @Post('/disease')
+    @Post('/disease/update')
     async updateDisease(
       @BodyParam('id') id:number,
       @BodyParam('disease_code') disease_code:string,

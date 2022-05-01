@@ -23,6 +23,17 @@ export class DiseaseService {
         }
     }
 
+    async updateDisease(conditions:any){
+        try{
+            let { id } = conditions;
+            delete conditions.id;
+            this.diseaseRepository.update(id, conditions);
+            return '更新成功'
+        }catch(e){
+            throw new Error("更新失败");
+        }
+    }
+
     async deleteArticle(conditions:any){
         try{
             this.diseaseRepository.remove(conditions);

@@ -20,6 +20,13 @@ export class DiseaseEntity {
   public disease_code!: string;
 
   @Column({
+    name: 'disease_name',
+    type: 'varchar',
+    nullable: false
+  })
+  public disease_name!: string;
+
+  @Column({
     name: 'disease_ref_department',
     type: 'varchar',
     nullable: false
