@@ -11,7 +11,7 @@ export class MedicineEntity {
   })
   public id!: number;
 
-  @PrimaryColumn({
+  @Column({
     name: 'medicine_code',
     type: 'varchar',
     width: 255,

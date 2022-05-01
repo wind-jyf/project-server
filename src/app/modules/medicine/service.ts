@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { getRepository, FindManyOptions } from 'typeorm';
+import { getRepository, FindManyOptions, FindConditions } from 'typeorm';
 import { MedicineEntity } from './entity';
 
 import { objectUtils } from '@/utils';
@@ -13,27 +13,28 @@ export class MedicineService {
         return this.medicineRepository.findAndCount(objectUtils.clean({ ...conditions, ...pagination }))
     }
 
-    async addArticle(conditions:any){
+    async getMedicinetById(conditions: FindConditions<MedicineEntity>) {
+        return this.medicineRepository.find(objectUtils.clean({ ...conditions }))
+    }
+
+    async addMedicine(conditions:any){
         try{
-            let {name,date,language,file} = conditions;
-            if(file){
-                let time = (new Date()).valueOf();
-                let suffix = file.originalname.split('.').pop();
-                fs.writeFile(`../Crophe/article/${time}.${suffix}`,file.buffer,(err:any)=>{
-                    if(err){
-                        throw new Error("写入失败" +err)
-                    }else{
-                        console.log("保存成功")
-                    }
-                })
-                let path = `article/${time}.${suffix}`;
-                this.medicineRepository.insert({});
-            }else{
-                this.medicineRepository.insert({});
-            }
+            // let {name,date,language,file} = conditions;
+            this.medicineRepository.insert(conditions);
             return '添加成功'
         }catch(e){
             throw new Error("添加失败");
+        }
+    }
+
+    async updateMedicine(conditions:any){
+        try{
+            let { id } = conditions;
+            delete conditions.id;
+            this.medicineRepository.update(id, conditions);
+            return '更新成功'
+        }catch(e){
+            throw new Error("更新失败");
         }
     }
 

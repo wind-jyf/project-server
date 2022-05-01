@@ -4,7 +4,6 @@ import {
     Controller,
     Post,
     Delete,
-    UploadedFile,
     BodyParam,
     UseBefore
   } from 'routing-controllers';
@@ -14,11 +13,6 @@ import {
 
   import { MedicineService } from './service';
 
-  const CONDITION_MAP = {
-    'CH': [{language: 'CH'}, {language: 'EN'}],
-    'EN': {language: 'EN'}
-  } as any
-
   @Controller('/api/crophe')
   @UseBefore(FormatResponse)
   export class ArticleController {
@@ -26,31 +20,67 @@ import {
 
       @Get('/medicine')
       async getArticleList(
-        @QueryParam('lan') lan: string,
-        @QueryParam('page_size') pageSize?: number,
-        @QueryParam('page') page?: number,
+        @QueryParam('pageSize') pageSize?: number,
+        @QueryParam('current') page?: number,
       ) {
           const [articleList, total] = await this.medicineService.getArticleAndCount(
               {
-                where: CONDITION_MAP[lan],
                 order: { id: 'DESC' }
               }, 
               paginationUtils.getCondition(page, pageSize)
             );
           return {
-            articleList,
-            pagination: paginationUtils.getResponse(total, page, pageSize)
+            data: articleList,
+            ...paginationUtils.getResponse(total, page, pageSize)
+          };
+      }
+      @Get('/medicineById')
+      async getMedicineById(
+        @QueryParam('id') id: number,
+      ) {
+          const [ medicine ] = await this.medicineService.getMedicinetById({ id });
+          return {
+            ...medicine
           };
       }
 
-    @Post('/medicine')
-    async addArticle(
-      @BodyParam('name') name:string,
-      @BodyParam('date') date:string,
-      @BodyParam('lan') language:string,
-      @UploadedFile('file') file:any
+    @Post('/medicine/add')
+    async addMedicine(
+      @BodyParam('medicine_code') medicine_code: string,
+      @BodyParam('medicine_name') medicine_name:string,
+      @BodyParam('medicine_manufacturer') medicine_manufacturer: string,
+      @BodyParam('medicine_category') medicine_category: number,
+      @BodyParam('medicine_specifications') medicine_specifications: string,
+      @BodyParam('medicine_price') medicine_price: number,
+      @BodyParam('medicine_form') medicine_form: number,
+      @BodyParam('medicine_rest_total') medicine_rest_total: number,
+
     ){
-      const result = await this.medicineService.addArticle({name,date,language,file})
+      const result = await this.medicineService.addMedicine({
+        medicine_code,medicine_name,medicine_manufacturer,medicine_category,
+        medicine_specifications, medicine_price, medicine_form, medicine_rest_total 
+      })
+      return result;
+    }
+
+    @Post('/medicine/update')
+    async updateMedicine(
+      @BodyParam('id') id: number,
+      @BodyParam('medicine_code') medicine_code: string,
+      @BodyParam('medicine_name') medicine_name: string,
+      @BodyParam('medicine_manufacturer') medicine_manufacturer: string,
+      @BodyParam('medicine_category') medicine_category: number,
+      @BodyParam('medicine_specifications') medicine_specifications: string,
+      @BodyParam('medicine_price') medicine_price: number,
+      @BodyParam('medicine_form') medicine_form: number,
+      @BodyParam('medicine_rest_total') medicine_rest_total: number,
+
+    ){
+      const result = await this.medicineService.updateMedicine({
+        id,
+        medicine_code,medicine_name,medicine_manufacturer,medicine_category,
+        medicine_specifications, medicine_price, medicine_form, medicine_rest_total 
+      })
       return result;
     }
 
