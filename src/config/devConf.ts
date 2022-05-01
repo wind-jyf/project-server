@@ -9,6 +9,6 @@ export const devConfig: IConfig = {
                 port: 3306,
                 username: "root",
                 password: "20000509",
-                database: "dnutest",
+                database: "project",
         }
 }

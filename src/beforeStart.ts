@@ -11,6 +11,6 @@ export async function beforeStart() {
   return createConnection({
       ...JSON.parse(JSON.stringify(config.mysql)), // typeORM/MySQL 对配置做了修改
       type: 'mysql',
-      entities: [__dirname + '/app/modules/article/entity.ts', __dirname + '/app/modules/**/entity.js'],
+      entities: [__dirname + '/app/modules/**/entity.ts', __dirname + '/app/modules/**/entity.js'],
     })
 }

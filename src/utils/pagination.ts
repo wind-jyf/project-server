@@ -14,8 +14,8 @@ class Pagination {
       pageSize = pageSize || total;
   
       return {
-        page,
-        page_size: pageSize,
+        current: page,
+        pageSize,
         total,
         total_pages: pageSize === 0 ? 0 : Math.ceil(total / pageSize)
       };

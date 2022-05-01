@@ -1,8 +1,8 @@
 const devconfig = {
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'dnutest',
+    password: '20000509',
+    database: 'project',
     port: '3306',
     useConnectionPooling: true
 }
