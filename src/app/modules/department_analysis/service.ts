@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { getRepository, FindManyOptions } from 'typeorm';
+import { getRepository, FindManyOptions, FindConditions } from 'typeorm';
 import { DepartMentAnalysisEntity } from './entity';
 
 import { objectUtils } from '@/utils';
@@ -13,27 +13,28 @@ export class DepartMentAnalysisService {
         return this.departMentAnalysisRepository.findAndCount(objectUtils.clean({ ...conditions, ...pagination }))
     }
 
-    async addArticle(conditions:any){
-        try{
-            let {name,date,language,file} = conditions;
-            if(file){
-                let time = (new Date()).valueOf();
-                let suffix = file.originalname.split('.').pop();
-                fs.writeFile(`../Crophe/article/${time}.${suffix}`,file.buffer,(err:any)=>{
-                    if(err){
-                        throw new Error("写入失败" +err)
-                    }else{
-                        console.log("保存成功")
-                    }
-                })
-                let path = `article/${time}.${suffix}`;
-                this.departMentAnalysisRepository.insert({});
-            }else{
-                this.departMentAnalysisRepository.insert({});
-            }
+    async getDepartMentAnalysisById(conditions: FindConditions<DepartMentAnalysisEntity>) {
+        return this.departMentAnalysisRepository.find(objectUtils.clean({ ...conditions }))
+    }
+
+    async addDepartMentAnalysis(conditions:any){
+        try {
+            let { name, date, language, file } = conditions;
+            this.departMentAnalysisRepository.insert(conditions);
             return '添加成功'
-        }catch(e){
+        } catch (e) {
             throw new Error("添加失败");
+        }
+    }
+
+    async updateDepartMentAnalysis(conditions:any){
+        try{
+            let { id } = conditions;
+            delete conditions.id;
+            this.departMentAnalysisRepository.update(id, conditions);
+            return '更新成功'
+        }catch(e){
+            throw new Error("更新失败");
         }
     }
 

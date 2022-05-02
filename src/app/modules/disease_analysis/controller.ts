@@ -26,20 +26,18 @@ import {
 
       @Get('/disease_analysis')
       async getArticleList(
-        @QueryParam('lan') lan: string,
         @QueryParam('page_size') pageSize?: number,
         @QueryParam('page') page?: number,
       ) {
           const [articleList, total] = await this.diseaseAnalysisService.getArticleAndCount(
               {
-                where: CONDITION_MAP[lan],
                 order: { id: 'DESC' }
               }, 
               paginationUtils.getCondition(page, pageSize)
             );
           return {
-            articleList,
-            pagination: paginationUtils.getResponse(total, page, pageSize)
+            data: articleList,
+            ...paginationUtils.getResponse(total, page, pageSize)
           };
       }
 

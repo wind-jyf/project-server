@@ -57,8 +57,12 @@ import {
 
     ){
       const result = await this.medicineService.addMedicine({
-        medicine_code,medicine_name,medicine_manufacturer,medicine_category,
+        medicine_code, medicine_name, medicine_manufacturer, medicine_category,
         medicine_specifications, medicine_price, medicine_form, medicine_rest_total 
+      })
+      await this.medicineService.addMedicineAnalysis({
+        medicine_code, medicine_name, medicine_category,
+        medicine_used_total: 0
       })
       return result;
     }

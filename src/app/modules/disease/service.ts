@@ -1,6 +1,7 @@
 import { Service } from 'typedi';
 import { getRepository, FindManyOptions } from 'typeorm';
 import { DiseaseEntity } from './entity';
+import { DiseaseAnalysisEntity } from '../disease_analysis/entity';
 
 import { objectUtils } from '@/utils';
 const fs = require('fs');
@@ -8,6 +9,7 @@ const fs = require('fs');
 @Service()
 export class DiseaseService {
     private diseaseRepository = getRepository(DiseaseEntity);
+    private diseaseAnalysisRepository = getRepository(DiseaseAnalysisEntity);
 
     async getArticleAndCount(conditions: FindManyOptions<DiseaseEntity>, pagination?: { skip?: number; take?: number }) {
         return this.diseaseRepository.findAndCount(objectUtils.clean({ ...conditions, ...pagination }))
@@ -40,6 +42,15 @@ export class DiseaseService {
             return "删除成功"
         } catch(e){
             throw new Error("删除失败")
+        }
+    }
+
+    async addDiseaseAnalysis(conditions:any){
+        try{
+            this.diseaseAnalysisRepository.insert(conditions);
+            return '添加成功'
+        }catch(e){
+            throw new Error("添加失败");
         }
     }
 }

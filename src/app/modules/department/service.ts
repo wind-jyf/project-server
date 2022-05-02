@@ -1,6 +1,7 @@
 import { Service } from 'typedi';
 import { getRepository, FindManyOptions } from 'typeorm';
 import { DepartMentEntity } from './entity';
+import { DepartMentAnalysisEntity } from '../department_analysis/entity';
 
 import { objectUtils } from '@/utils';
 const fs = require('fs');
@@ -8,6 +9,7 @@ const fs = require('fs');
 @Service()
 export class DepartMentService {
     private departMentRepository = getRepository(DepartMentEntity);
+    private departMentAnalysisRepository = getRepository(DepartMentAnalysisEntity);
 
     async getArticleAndCount(conditions: FindManyOptions<DepartMentEntity>, pagination?: { skip?: number; take?: number }) {
         return this.departMentRepository.findAndCount(objectUtils.clean({ ...conditions, ...pagination }))
@@ -48,6 +50,16 @@ export class DepartMentService {
             return "删除成功"
         } catch(e){
             throw new Error("删除失败")
+        }
+    }
+
+    async addDepartMentAnalysis(conditions: any){
+        try {
+            let { name, date, language, file } = conditions;
+            this.departMentAnalysisRepository.insert(conditions);
+            return '添加成功'
+        } catch (e) {
+            throw new Error("添加失败");
         }
     }
 }

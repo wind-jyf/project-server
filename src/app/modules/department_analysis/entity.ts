@@ -11,7 +11,7 @@ export class DepartMentAnalysisEntity {
   })
   public id!: number;
 
-  @PrimaryColumn({
+  @Column({
     name: 'department_code',
     type: 'varchar',
     width: 255,
@@ -20,46 +20,61 @@ export class DepartMentAnalysisEntity {
   public department_code!: string;
 
   @Column({
+    name: 'department_name',
+    type: 'varchar',
+    nullable: false
+  })
+  public department_name!: string;
+  
+  @Column({
+    name: 'department_category',
+    type: 'int',
+    nullable: false
+  })
+  public department_category!: number;
+
+
+  @Column({
     name: 'department_ref_youth_total',
     type: 'int',
-    nullable: true
+    nullable: false
   })
   public department_ref_youth_total!: number;
   
   @Column({
     name: 'department_ref_middle_total',
     type: 'int',
-    nullable: true
+    nullable: false
   })
   public department_ref_middle_total!: number;
   
   @Column({
     name: 'department_ref_old_total',
     type: 'int',
-    nullable: true
+    nullable: false
   })
   public department_ref_old_total!: number;
 
   @Column({
     name: 'department_ref_female_total',
     type: 'int',
-    nullable: true
+    nullable: false
   })
-  public department_ref_femal_total!: number;
+  public department_ref_female_total!: number;
   
   @Column({
     name: 'department_ref_male_total',
     type: 'int',
-    nullable: true
+    nullable: false
   })
-  public department_ref_man_total!: number;
+  public department_ref_male_total!: number;
   
   // json对象格式
   @Column({
     name: 'department_pv',
     type: 'varchar',
     width: 255,
-    nullable: false
+    nullable: true
   })
   public department_pv!: string;
 }

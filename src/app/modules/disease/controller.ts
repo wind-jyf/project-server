@@ -45,6 +45,14 @@ import {
       @BodyParam('disease_description') disease_description?:string,
     ){
       const result = await this.diseaseService.addArticle({ disease_code, disease_name, disease_ref_department, disease_description })
+      await this.diseaseService.addDiseaseAnalysis({
+        disease_code, disease_name, 
+        disease_ref_youth_total: 0,
+        disease_ref_middle_total: 0,
+        disease_ref_old_total: 0,
+        disease_ref_female_total: 0,
+        disease_ref_male_total: 0
+      })
       return result;
     }
 

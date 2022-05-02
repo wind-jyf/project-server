@@ -11,13 +11,20 @@ export class DiseaseAnalysisEntity {
   })
   public id!: number;
 
-  @PrimaryColumn({
+  @Column({
     name: 'disease_code',
     type: 'varchar',
     width: 255,
     nullable: false
   })
   public disease_code!: string;
+
+  @Column({
+    name: 'disease_name',
+    type: 'varchar',
+    nullable: false
+  })
+  public disease_name!: string;
 
   @Column({
     name: 'disease_ref_youth_total',
@@ -45,12 +52,12 @@ export class DiseaseAnalysisEntity {
     type: 'int',
     nullable: true
   })
-  public disease_ref_femal_total!: number;
+  public disease_ref_female_total!: number;
   
   @Column({
     name: 'disease_ref_male_total',
     type: 'int',
     nullable: true
   })
-  public disease_ref_man_total!: number;
+  public disease_ref_male_total!: number;
 }

@@ -69,6 +69,41 @@ import {
         main_suit, main_symptom, patient_ref_department, patient_ref_medicine,
         patient_ref_disease, medical_advice
       })
+      const [ department_analysis ] = await this.workbenchService.getDepartMentAnalysisByDepartMentCode({ department_code: patient_ref_department });
+      const { 
+        department_ref_youth_total, department_ref_middle_total, department_ref_old_total,
+        department_ref_female_total, department_ref_male_total
+      } = department_analysis;
+      const newDepartMentAnalysis = {
+        ...department_analysis,
+        department_ref_youth_total: patient_age < 30 ? department_ref_youth_total + 1 : department_ref_youth_total,
+        department_ref_middle_total: patient_age >= 30 && patient_age < 50 ? department_ref_middle_total + 1 : department_ref_middle_total,
+        department_ref_old_total: patient_age >=50 ? department_ref_old_total + 1 : department_ref_old_total,
+        department_ref_female_total: patient_gender === 'femal' ? department_ref_female_total + 1 : department_ref_female_total,
+        department_ref_male_total: patient_gender === 'man' ? department_ref_male_total + 1 : department_ref_male_total,
+      }
+      await this.workbenchService.updateDepartMentAnalysis(newDepartMentAnalysis);
+      const [ medicine_analysis ] = await this.workbenchService.getMedicineAnalysisByMedicineCode({ medicine_code: patient_ref_medicine });
+      const { medicine_used_total } = medicine_analysis;
+      const newMedicineAnalysis = {
+        ...medicine_analysis,
+        medicine_used_total: medicine_used_total + 1
+      }
+      await this.workbenchService.updateMedicineAnalysis(newMedicineAnalysis);
+      const [ disease_analysis ] = await this.workbenchService.getDiseaseAnalysisByDiseaseCode({ disease_code: patient_ref_disease });
+      const { 
+        disease_ref_youth_total, disease_ref_middle_total, disease_ref_old_total,
+        disease_ref_female_total, disease_ref_male_total
+      } = disease_analysis;
+      const newDiseaseAnalysis = {
+        ...disease_analysis,
+        disease_ref_youth_total: patient_age < 30 ? disease_ref_youth_total + 1 : disease_ref_youth_total,
+        disease_ref_middle_total: patient_age >= 30 && patient_age < 50 ? disease_ref_middle_total + 1 : disease_ref_middle_total,
+        disease_ref_old_total: patient_age >=50 ? disease_ref_old_total + 1 : disease_ref_old_total,
+        disease_ref_female_total: patient_gender === 'femal' ? disease_ref_female_total + 1 : disease_ref_female_total,
+        disease_ref_male_total: patient_gender === 'man' ? disease_ref_male_total + 1 : disease_ref_male_total,
+      }
+      await this.workbenchService.updateDiseaseAnalysis(newDiseaseAnalysis);
       return result;
     }
 

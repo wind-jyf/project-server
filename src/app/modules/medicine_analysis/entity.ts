@@ -11,13 +11,27 @@ export class MedicineAnalysisEntity {
   })
   public id!: number;
 
-  @PrimaryColumn({
+  @Column({
     name: 'medicine_code',
     type: 'varchar',
     width: 255,
     nullable: false
   })
   public medicine_code!: string;
+
+  @Column({
+    name: 'medicine_name',
+    type: 'varchar',
+    nullable: false
+  })
+  public medicine_name!: string;
+
+  @Column({
+    name: 'medicine_category',
+    type: 'int',
+    nullable: false
+  })
+  public medicine_category!: number;
 
   @Column({
     name: 'medicine_used_total',
