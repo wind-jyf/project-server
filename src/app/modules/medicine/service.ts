@@ -19,7 +19,6 @@ export class MedicineService {
 
     async addMedicine(conditions:any){
         try{
-            // let {name,date,language,file} = conditions;
             this.medicineRepository.insert(conditions);
             return '添加成功'
         }catch(e){

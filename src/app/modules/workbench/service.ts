@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { getRepository, FindManyOptions } from 'typeorm';
+import { getRepository, FindManyOptions, FindConditions } from 'typeorm';
 import { WorkbenchEntity } from './entity';
 
 import { objectUtils } from '@/utils';
@@ -13,24 +13,14 @@ export class WorkbenchService {
         return this.workbenchRepository.findAndCount(objectUtils.clean({ ...conditions, ...pagination }))
     }
 
+    async getWorkBenchById(conditions: FindConditions<WorkbenchEntity>) {
+        return this.workbenchRepository.find(objectUtils.clean({ ...conditions }))
+    }
+
     async addArticle(conditions:any){
         try{
             let {name,date,language,file} = conditions;
-            if(file){
-                let time = (new Date()).valueOf();
-                let suffix = file.originalname.split('.').pop();
-                fs.writeFile(`../Crophe/article/${time}.${suffix}`,file.buffer,(err:any)=>{
-                    if(err){
-                        throw new Error("写入失败" +err)
-                    }else{
-                        console.log("保存成功")
-                    }
-                })
-                let path = `article/${time}.${suffix}`;
-                this.workbenchRepository.insert({});
-            }else{
-                this.workbenchRepository.insert({});
-            }
+            this.workbenchRepository.insert(conditions);
             return '添加成功'
         }catch(e){
             throw new Error("添加失败");

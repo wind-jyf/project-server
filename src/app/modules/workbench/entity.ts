@@ -68,6 +68,13 @@ export class WorkbenchEntity {
   public patient_ref_medicine!: string;
 
   @Column({
+    name: 'patient_ref_disease',
+    type: 'varchar',
+    nullable: false
+  })
+  public patient_ref_disease!: string;
+
+  @Column({
     name: 'medical_advice',
     type: 'varchar',
     nullable: true
