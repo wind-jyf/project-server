@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { getRepository, FindManyOptions } from 'typeorm';
+import { getRepository, FindManyOptions, FindConditions } from 'typeorm';
 import { DiseaseEntity } from './entity';
 import { DiseaseAnalysisEntity } from '../disease_analysis/entity';
 
@@ -13,6 +13,10 @@ export class DiseaseService {
 
     async getArticleAndCount(conditions: FindManyOptions<DiseaseEntity>, pagination?: { skip?: number; take?: number }) {
         return this.diseaseRepository.findAndCount(objectUtils.clean({ ...conditions, ...pagination }))
+    }
+
+    async getDiseaseByDiseaseCode(conditions: FindConditions<DiseaseEntity>) {
+        return this.diseaseRepository.find(objectUtils.clean({ ...conditions }))
     }
 
     async addArticle(conditions:any){

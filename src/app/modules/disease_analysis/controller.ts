@@ -41,14 +41,17 @@ import {
           };
       }
 
-    @Post('/disease_analysis')
-    async addArticle(
-      @BodyParam('name') name:string,
-      @BodyParam('date') date:string,
-      @BodyParam('lan') language:string,
-      @UploadedFile('file') file:any
+    @Post('/disease_analysis/predict')
+    async predictDisease(
+      @BodyParam('patient_gender') patient_gender:string,
+      @BodyParam('patient_age') patient_age:number,
+      @BodyParam('patient_job') patient_job:string,
+      @BodyParam('main_suit') main_suit:string,
     ){
-      const result = await this.diseaseAnalysisService.addArticle({name,date,language,file})
+      await this.diseaseAnalysisService.training();
+      const result = await this.diseaseAnalysisService.predict({ 
+        patient_gender, patient_age, patient_job, main_suit
+      })
       return result;
     }
 

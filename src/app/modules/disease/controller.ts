@@ -36,6 +36,15 @@ import {
             ...paginationUtils.getResponse(total, page, pageSize)
           };
       }
+      @Get('/diseaseAnalysisById')
+      async getDiseaseById(
+        @QueryParam('disease_code') disease_code: string,
+      ) {
+        const [ disease ] = await this.diseaseService.getDiseaseByDiseaseCode({ disease_code });
+        return {
+          ...disease
+        };
+      }
 
     @Post('/disease/add')
     async addArticle(
