@@ -55,6 +55,19 @@ import {
       return result;
     }
 
+    @Post('/disease_analysis/compute')
+    async computePredictPercent(
+      @BodyParam('percent_text') percent_text:string,
+    ){
+      const percentArray = percent_text.split(':');
+      const percentNumber = Number(percentArray[0] || 0) / (Number(percentArray[0] || 0) + Number(percentArray[1] || 1));
+      console.log(percentNumber);
+      const result = await this.diseaseAnalysisService.computePercent(percentNumber);
+      return {
+        result
+      };
+    }
+
     @Delete('/disease_analysis')
     async deleteArticle(
       @BodyParam('id') id:number

@@ -7,6 +7,7 @@ import { DiseaseAnalysisEntity } from './entity';
 import { WorkbenchEntity } from '../workbench/entity';
 
 import { objectUtils } from '@/utils';
+import { shuffleSelf } from '@/utils/shuffle';
 const fs = require('fs');
 const naiveBayes = new NaiveBayes();
 
@@ -82,6 +83,58 @@ export class DiseaseAnalysisService {
             return "删除成功"
         } catch(e){
             throw new Error("删除失败")
+        }
+    }
+
+    async trainningCompute(trainingList: any[], naiveBayes: any) {
+        trainingList.forEach(item => {
+            naiveBayes.trainInline(
+                `${item.patient_gender}
+                ${item.patient_age}岁 
+                ${item.patient_job}
+                ${item.main_suit}
+                ${item.main_symptom}
+                ${item.medical_advice}`
+                , item.patient_ref_disease
+            );
+        })
+    }
+
+    async predictCompute(testList: any[], naiveBayes: any) {
+        const resultList = testList.map(item => {
+            return naiveBayes.classify(
+                `${item.patient_gender}
+                ${item.patient_age}岁
+                ${item.patient_job}
+                ${item.main_suit}`
+            )
+        })
+        const correctTotal = testList.reduce((pre, current, index) => {
+            if (current.patient_ref_disease === resultList[index]) {
+                return pre + 1;
+            } else {
+                return pre;
+            }
+        }, 0);
+        console.log(correctTotal);
+        return (correctTotal / testList.length) * 100;
+    }
+
+    async computePercent(percent: number) {
+        try {
+            const naiveBayes = new NaiveBayes();
+            const [ workbenchList ] = await this.workBenchRepository.findAndCount();
+            const shuffleWorkBenchList = shuffleSelf(workbenchList);
+            const trainingLength = Math.round(workbenchList.length * percent);
+            const trainingList = shuffleWorkBenchList.slice(0, trainingLength);
+            const testList = shuffleWorkBenchList.slice(trainingLength);
+            if (testList.length <= 0) {
+                testList.push(...trainingList);
+            }
+            await this.trainningCompute(trainingList, naiveBayes);
+            return await this.predictCompute(testList, naiveBayes);
+        } catch (e) {
+            throw new Error('计算失败');
         }
     }
 }
