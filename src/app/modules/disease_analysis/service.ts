@@ -116,7 +116,6 @@ export class DiseaseAnalysisService {
                 return pre;
             }
         }, 0);
-        console.log(correctTotal);
         return (correctTotal / testList.length) * 100;
     }
 

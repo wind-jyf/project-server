@@ -45,6 +45,7 @@ import {
       async getMedicineById(
         @QueryParam('id') id: number,
       ) {
+          console.log('server');
           const [ workbench ] = await this.workbenchService.getWorkBenchById({ id });
           return {
             ...workbench
@@ -64,6 +65,7 @@ import {
       @BodyParam('patient_ref_disease') patient_ref_disease:string,
       @BodyParam('medical_advice') medical_advice:string,
     ){
+      
       const result = await this.workbenchService.addArticle({
         patient_name, patient_gender, patient_age, patient_job,
         main_suit, main_symptom, patient_ref_department, patient_ref_medicine,

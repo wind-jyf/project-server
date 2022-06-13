@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const expiresIn = 60 * 60 * 24 * 30;    //时效 (秒)
 const secretKey = '&*^R*G&(FRDwp4eg3'
 
+// 生成token
 export function generateToken(uid) {
     const token = jwt.sign({
         uid
@@ -22,3 +23,5 @@ export function tokenExp(token) {
     let time = parseInt((new Date().getTime()) / 1000);
     return verify.exp - time;
 }
+
+

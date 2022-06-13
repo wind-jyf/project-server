@@ -23,14 +23,14 @@ export class DepartMentController {
       @QueryParam('pageSize') pageSize?: number,
       @QueryParam('current') page?: number,
     ){
-        const [articleList, total] = await this.departmentService.getArticleAndCount(
+        const [departMentList, total] = await this.departmentService.getArticleAndCount(
             {
               order: { id: 'DESC' }
             }, 
             paginationUtils.getCondition(page, pageSize)
           );
         return {
-          data: articleList,
+          data: departMentList,
           ...paginationUtils.getResponse(total, page, pageSize)
         };
     }
@@ -52,6 +52,7 @@ export class DepartMentController {
       @BodyParam('department_name') department_name:string,
       @BodyParam('department_category') department_category:string,
     ){
+      console.log('server');
       const result = await this.departmentService.addDepartMent({department_code,department_name,department_category})
       await this.departmentService.addDepartMentAnalysis({
         department_code, department_name, department_category,
